@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:meteomuse/pages/home.dart';
 import 'package:meteomuse/pages/intro_page.dart';
+import 'package:meteomuse/services/weather_service.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => WeatherService(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,13 +20,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: Size(360, 760),
+        designSize: const Size(360, 760),
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (_, child) {
-          return const MaterialApp(
+          return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IntroScreen(),
+       routes: {
+                '/home': (context) =>  WeatherScreen(),},
+      home: const IntroScreen(),
     );
         });
   }

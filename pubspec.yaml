@@ -39,6 +39,10 @@ dependencies:
   introduction_slider: ^2.0.1
   shared_preferences: ^2.3.1
   flutter_screenutil: ^5.9.3
+  http: ^1.2.2
+  geolocator: ^13.0.1
+  geocoding: ^3.0.0
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

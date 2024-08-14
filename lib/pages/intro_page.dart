@@ -1,8 +1,5 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'dart:ui' as ui;
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,40 +17,51 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
   final PageController _pageController = PageController();
   int _currentPage = 0;
   ui.Image? arrowImage;
- late AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
-   super.initState();
+    super.initState();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
     _loadArrowImage();
   }
-   @override
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
- Future<void> _loadArrowImage() async {
-  try {
-    print("Loading arrow image...");
-    final data = await rootBundle.load('assets/icons/right-arrow.png');
-    print("Arrow image data loaded");
-    final list = Uint8List.view(data.buffer);
-    final image = await decodeImageFromList(list);
-    print("Arrow image decoded");
+  Future<void> _loadArrowImage() async {
+    try {
+      print("Loading arrow image...");
+      final data = await rootBundle.load('assets/icons/right-arrow.png');
+      print("Arrow image data loaded");
+      final list = Uint8List.view(data.buffer);
+      final image = await decodeImageFromList(list);
+      print("Arrow image decoded");
 
-    setState(() {
-      arrowImage = image;
-    });
-  } catch (e) {
-    print("Error loading arrow image: $e");
+      setState(() {
+        arrowImage = image;
+      });
+    } catch (e) {
+      print("Error loading arrow image: $e");
+    }
   }
-}
 
+  void _onArrowClick() {
+    if (_currentPage < 3) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      Navigator.pushReplacementNamed(context, '/home'); // Navigate to home
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,10 +99,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
             right: 20,
             child: TextButton(
               onPressed: () {
-                setState(() {
-                  _currentPage = 4;
-                });
-                _pageController.jumpToPage(2);
+                _onArrowClick(); // Handle arrow click
               },
               child: const Text(
                 "Skip",
@@ -121,11 +126,14 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
               bottom: 80,
               left: 0,
               right: 0,
-              child: CustomPaint(
-                size: const Size(80, 80),
-                painter: ArrowPainter(
-                  progress: (_currentPage + 1) / 4,
-                  arrowImage: arrowImage!,
+              child: GestureDetector(
+                onTap: _onArrowClick, // Handle arrow click
+                child: CustomPaint(
+                  size: const Size(80, 80),
+                  painter: ArrowPainter(
+                    progress: (_currentPage + 1) / 4,
+                    arrowImage: arrowImage!,
+                  ),
                 ),
               ),
             ),
@@ -166,7 +174,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
                       _buildCircleIndicator(_currentPage == 0),
                       _buildCircleIndicator(_currentPage == 1),
                       _buildCircleIndicator(_currentPage == 2),
-                      _buildCircleIndicator(_currentPage == 4),
+                      _buildCircleIndicator(_currentPage == 3),
                     ],
                   ),
                   SizedBox(height: 20.h),
@@ -232,5 +240,4 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
       ),
     );
   }
-
 }
