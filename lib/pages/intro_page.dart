@@ -37,15 +37,23 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
     super.dispose();
   }
 
-  Future<void> _loadArrowImage() async {
-    final data = await rootBundle.load('icons/right-arrow.png');
+ Future<void> _loadArrowImage() async {
+  try {
+    print("Loading arrow image...");
+    final data = await rootBundle.load('assets/icons/right-arrow.png');
+    print("Arrow image data loaded");
     final list = Uint8List.view(data.buffer);
     final image = await decodeImageFromList(list);
+    print("Arrow image decoded");
 
     setState(() {
       arrowImage = image;
     });
+  } catch (e) {
+    print("Error loading arrow image: $e");
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +112,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
                 _buildCircleIndicator(_currentPage == 0),
                 _buildCircleIndicator(_currentPage == 1),
                 _buildCircleIndicator(_currentPage == 2),
-                _buildCircleIndicator(_currentPage == 4),
+                _buildCircleIndicator(_currentPage == 3),
               ],
             ),
           ),
@@ -116,7 +124,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
               child: CustomPaint(
                 size: const Size(80, 80),
                 painter: ArrowPainter(
-                  progress: (_currentPage + 1) / 3,
+                  progress: (_currentPage + 1) / 4,
                   arrowImage: arrowImage!,
                 ),
               ),
@@ -132,7 +140,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
     required String imagePath,
   }) {
     return Container(
-      color: Colors.transparent,
+      color: Colors.white,
       child: Column(
         children: [
           ClipPath(
@@ -168,16 +176,29 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
           ),
           Container(
             color: Colors.white,
-            height: MediaQuery.of(context).size.height * 0.4,
-            child: Center(
-              child: Text(
-                description,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF2C2D35),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    color: Color(0xFF0A0A22),
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.left,
                 ),
-                textAlign: TextAlign.center,
-              ),
+                const SizedBox(height: 20),
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Color(0xFF0A0A22),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
         ],
