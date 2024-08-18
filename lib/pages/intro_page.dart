@@ -59,7 +59,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
         curve: Curves.easeInOut,
       );
     } else {
-      Navigator.pushReplacementNamed(context, '/home'); // Navigate to home
+      Navigator.pushReplacementNamed(context, '/loading'); // Navigate to home
     }
   }
 
