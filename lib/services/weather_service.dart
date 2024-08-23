@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:meteomuse/model/weatherModel.dart';
 
-const apiKey = '15b49dd4bab62fca48a75d63662f7b37';
+const apiKey = 'your-api';
 
 class WeatherService with ChangeNotifier {
   WeatherModel? _currentWeather;
