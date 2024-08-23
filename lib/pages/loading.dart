@@ -5,7 +5,7 @@ import 'package:meteomuse/pages/home.dart';
 import 'package:meteomuse/services/location_service.dart';
 import 'package:meteomuse/services/weather_service.dart';
 
-const apiKey = '15b49dd4bab62fca48a75d63662f7b37';
+const apiKey = 'your-api';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
